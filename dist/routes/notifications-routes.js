@@ -19,10 +19,13 @@ const router = express_1.default.Router();
 //WebPush.generateVAPIDKeys();
 const publicKey = 'BNDcqDNFUP14-910AzOdUT3DzgdTez2eiWvrkJKFRtPIU2i0PQgtwBtXFDvsfOFXa1L3Fd548gLkh-yMDRkI2ps';
 const privateKey = 'zADv389I3dWTex_I-FJwRkGHNRpIXC99bsiLT2BBbqI';
-web_push_1.default.setVapidDetails('https://microcell-app.vercel.app/', publicKey, privateKey);
+web_push_1.default.setVapidDetails('https://microcell-4dphfedtr-yraffic02.vercel.app/', publicKey, privateKey);
 router.get("/push/public_key", function (req, res) {
     return res.json(publicKey);
 });
+//router.post("/push/register", async function(req, res) {
+//    const { endpoint, keys } = req.body
+//})
 router.post("/push/send", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const sendPushBody = zod_1.z.object({
@@ -35,7 +38,8 @@ router.post("/push/send", function (req, res) {
             })
         });
         const { subscription } = sendPushBody.parse(req.body);
-        console.log(web_push_1.default.sendNotification(subscription, "Mensagem do backend"));
+        const { name } = req.body;
+        web_push_1.default.sendNotification(subscription, name);
         return res.json("Notificação enviada");
     });
 });

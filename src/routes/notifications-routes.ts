@@ -8,13 +8,20 @@ const router = express.Router();
 const publicKey = 'BNDcqDNFUP14-910AzOdUT3DzgdTez2eiWvrkJKFRtPIU2i0PQgtwBtXFDvsfOFXa1L3Fd548gLkh-yMDRkI2ps'
 const privateKey = 'zADv389I3dWTex_I-FJwRkGHNRpIXC99bsiLT2BBbqI'
 
-WebPush.setVapidDetails('http://localhost:3000', publicKey, privateKey)
+WebPush.setVapidDetails('https://microcell-4dphfedtr-yraffic02.vercel.app/', publicKey, privateKey)
 
 
 
 router.get("/push/public_key", function(req, res) {
     return res.json(publicKey)
 })
+
+//router.post("/push/register", async function(req, res) {
+//    const { endpoint, keys } = req.body
+//})
+
+
+
 
 router.post("/push/send", async function(req, res) {
     const sendPushBody = z.object({
@@ -28,9 +35,10 @@ router.post("/push/send", async function(req, res) {
     })
 
     const {subscription} = sendPushBody.parse(req.body)
+    const { name } = req.body
 
 
-    console.log(WebPush.sendNotification(subscription, "Mensagem do backend"))
+    WebPush.sendNotification(subscription, name)
 
     return res.json("Notificação enviada")
 
