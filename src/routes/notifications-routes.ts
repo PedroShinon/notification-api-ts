@@ -21,7 +21,7 @@ router.get("/push/public_key", function(req, res) {
 
 router.post("/push/register", async function(req, res) {
 
-    console.log(req.body)
+    //console.log(req.body)
 
     return res.status(201).json()
 
