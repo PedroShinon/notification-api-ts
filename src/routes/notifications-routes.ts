@@ -1,9 +1,9 @@
 import express from "express"
 import WebPush from "web-push"
 import {z} from "zod"
-import { PrismaClient } from "@prisma/client";
+//import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+//const prisma = new PrismaClient()
 const router = express.Router();
 
 //WebPush.generateVAPIDKeys();
@@ -20,15 +20,12 @@ router.get("/push/public_key", function(req, res) {
 })
 
 router.post("/push/register", async function(req, res) {
-    const { endpoint, keys  } = req.body
-    const subscription =  await prisma.subscription.create({ data: {
-        endpoint: endpoint,
-        p256dh: keys.p256dh,
-        auth: keys.auth
 
-    }})
+    console.log(req.body)
 
-     return res.send(subscription)
+    return res.status(201).json()
+
+
 })
 
 
