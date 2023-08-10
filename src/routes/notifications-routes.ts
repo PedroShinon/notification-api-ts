@@ -8,7 +8,7 @@ const router = express.Router();
 const publicKey = 'BNDcqDNFUP14-910AzOdUT3DzgdTez2eiWvrkJKFRtPIU2i0PQgtwBtXFDvsfOFXa1L3Fd548gLkh-yMDRkI2ps'
 const privateKey = 'zADv389I3dWTex_I-FJwRkGHNRpIXC99bsiLT2BBbqI'
 
-WebPush.setVapidDetails('https://microcell-app.vercel.app/', publicKey, privateKey)
+WebPush.setVapidDetails('http://localhost:3000', publicKey, privateKey)
 
 
 
