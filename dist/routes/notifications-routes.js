@@ -15,17 +15,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const web_push_1 = __importDefault(require("web-push"));
 const zod_1 = require("zod");
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 const router = express_1.default.Router();
 //WebPush.generateVAPIDKeys();
 const publicKey = 'BNDcqDNFUP14-910AzOdUT3DzgdTez2eiWvrkJKFRtPIU2i0PQgtwBtXFDvsfOFXa1L3Fd548gLkh-yMDRkI2ps';
 const privateKey = 'zADv389I3dWTex_I-FJwRkGHNRpIXC99bsiLT2BBbqI';
 web_push_1.default.setVapidDetails('https://microcell-4dphfedtr-yraffic02.vercel.app/', publicKey, privateKey);
 router.get("/push/public_key", function (req, res) {
-    return res.json(publicKey);
+    return res.status(200).json(publicKey);
 });
-//router.post("/push/register", async function(req, res) {
-//    const { endpoint, keys } = req.body
-//})
+router.post("/push/register", function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { endpoint, keys } = req.body;
+        const subscription = yield prisma.subscription.create({ data: {
+                endpoint: endpoint,
+                p256dh: keys.p256dh,
+                auth: keys.auth
+            } });
+        return res.send(subscription);
+    });
+});
 router.post("/push/send", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const sendPushBody = zod_1.z.object({
