@@ -1,6 +1,9 @@
 import express from "express"
 import WebPush from "web-push"
 import {z} from "zod"
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient()
 const router = express.Router();
 
 //WebPush.generateVAPIDKeys();
@@ -13,12 +16,20 @@ WebPush.setVapidDetails('https://microcell-4dphfedtr-yraffic02.vercel.app/', pub
 
 
 router.get("/push/public_key", function(req, res) {
-    return res.json(publicKey)
+    return res.status(200).json(publicKey)
 })
 
-//router.post("/push/register", async function(req, res) {
-//    const { endpoint, keys } = req.body
-//})
+router.post("/push/register", async function(req, res) {
+    const { endpoint, keys  } = req.body
+    const subscription =  await prisma.subscription.create({ data: {
+        endpoint: endpoint,
+        p256dh: keys.p256dh,
+        auth: keys.auth
+
+    }})
+
+     return res.send(subscription)
+})
 
 
 
